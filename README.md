@@ -88,7 +88,7 @@ KrishiMitra consists of three major subsystems:
 - Disease-related assistance
 - Digital farmer support
 
-## 🌍 Impact and Objectives
+## Impact and Objectives
 
 KrishiMitra aims to:
 
