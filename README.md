@@ -50,8 +50,6 @@ The model supports 10 tomato plant health and disease categories:
 - Inference deployment: ONNX Runtime
 - Inference input: 640 × 640
 
-See `ai-model/model-information.md` for further details.
-
 ## Technology Stack
 
 | Component | Technology |
