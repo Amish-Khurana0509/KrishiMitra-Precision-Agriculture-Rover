@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Crop Image</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+</head>
+<body>
+
+<div class="navbar">
+  <img src="/static/logo.png" width="50" class="logo">
+  <div class="title">AgriSetu</div>
+  <div>
+    <a href="/">Home</a>
+    <a href="/market">Market</a>
+    <a href="/advisor">Advisor</a>
+    <a href="/legal">Legal</a>
+    <a href="/ai">AI Scan</a>
+  </div>
+</div>
+
+<div class="container">
+  <h1>🌿 Upload Crop Image</h1>
+  <p>Upload an image of your crop to detect disease and get recommendations.</p>
+
+  <form method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*" required>
+    <br><br>
+    <button type="submit">Upload & Analyze</button>
+  </form>
+
+  {% if result %}
+    <div class="result">
+      <h2>🩺 Disease Detected: {{ result.disease }}</h2>
+      <h3>💊 Treatment: {{ result.treatment }}</h3>
+    </div>
+  {% endif %}
+</div>
+
+
+
+</body>
+</html>

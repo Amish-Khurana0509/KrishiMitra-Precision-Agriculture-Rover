@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Market Prices</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+</head>
+<body>
+
+<div class="navbar">
+  <img src="/static/logo.png" width="50" class="logo">
+  <div class="title">AgriSetu</div>
+  <div>
+    <a href="/">Home</a>
+    <a href="/market">Market</a>
+    <a href="/advisor">Advisor</a>
+    <a href="/legal">Legal</a>
+    <a href="/ai">AI Scan</a>
+  </div>
+</div>
+
+<div class="container">
+  <h1>🧺 Live Market Prices</h1>
+  <p>Provides A real-time Market Price of Commodities in Different Markets</p>
+  <form method="POST">
+    <input type="text" name="commodity" placeholder="Filter by Commodity">
+    <input type="text" name="market" placeholder="Filter by Market">
+    <button type="submit">Apply Filters</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Commodity</th>
+        <th>Market</th>
+        <th>Modal Price</th>
+        <th>Arrival Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in data %}
+      <tr>
+        <td>{{ item.commodity }}</td>
+        <td>{{ item.market }}</td>
+        <td>{{ item.modal_price }}</td>
+        <td>{{ item.arrival_date }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4">No data found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

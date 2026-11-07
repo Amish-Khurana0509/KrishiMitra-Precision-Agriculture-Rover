@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advisor</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <style>
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .chat-window {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      background: #fafafa;
+    }
+    .message {
+      display: flex;
+      margin: 10px 0;
+    }
+    .message.user .bubble {
+      background: #dcf8c6;
+      margin-left: auto;
+      order: 2;
+    }
+    .message.bot .bubble {
+      background: #e1eaff;
+      order: 1;
+    }
+    .bubble {
+      padding: 10px 15px;
+      border-radius: 18px;
+      max-width: 80%;
+    }
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #bbb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+    .message.user .avatar {
+      background: #4caf50;
+      margin-right: 0;
+      margin-left: 10px;
+      order: 3;
+    }
+    .typing {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      border-radius: 50%;
+      background: #ccc;
+      animation: blink 1s infinite alternate;
+      margin-right: 2px;
+    }
+    @keyframes blink {
+      to { background: #999; }
+    }
+    form {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+    }
+    select {
+      flex: 1;
+      padding: 8px;
+      font-size: 16px;
+    }
+    button {
+      padding: 9px 15px;
+      background: #4caf50;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 10px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <img src="/static/logo.png" width="50" class="logo">
+  <div class="title">AgriSetu</div>
+  <div>
+    <a href="/">Home</a>
+    <a href="/market">Market</a>
+    <a href="/advisor">Advisor</a>
+    <a href="/legal">Legal</a>
+    <a href="/ai">AI Scan</a>
+  </div>
+</div>
+
+<div class="container">
+  <h1>👨‍🌾 Farming Tips</h1>
+  <p>Here are some general tips for farmers:</p>
+  <ul>
+    <li>Use organic fertilizers to keep soil healthy.</li>
+    <li>Check market rates before harvesting.</li>
+    <li>Use crop rotation to avoid pests.</li>
+    <li>Store grains in dry, safe areas.</li>
+  </ul>
+</div>
+
+<div class="container">
+  <h2>🤖 AgriSetu AI Advisor</h2>
+  <p>Ask our AI for expert crop recommendations:</p>
+  <div class="chat-window">
+    {% if not crop %}
+      <div class="message bot">
+        <div class="avatar">AI</div>
+        <div class="bubble">Hello! Please select a crop to get started.</div>
+      </div>
+    {% endif %}
+
+    {% if crop %}
+      <div class="message user">
+        <div class="bubble">I need advice for {{ crop|capitalize }}.</div>
+        <div class="avatar">👨‍🌾</div>
+      </div>
+      <div class="message bot">
+        <div class="avatar">AI</div>
+        <div class="bubble">{{ advice }}</div>
+      </div>
+    {% endif %}
+  </div>
+
+  <form method="POST">
+    <select name="crop" required>
+      <option value="">-- Select Crop --</option>
+      <option value="wheat" {% if crop == 'wheat' %}selected{% endif %}>🌾 Wheat</option>
+      <option value="rice" {% if crop == 'rice' %}selected{% endif %}>🍚 Rice</option>
+      <option value="tomato" {% if crop == 'tomato' %}selected{% endif %}>🍅 Tomato</option>
+    </select>
+    <button type="submit">Ask AI</button>
+  </form>
+</div>
+
+</body></html>
