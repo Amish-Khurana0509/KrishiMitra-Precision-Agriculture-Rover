@@ -1,0 +1,35 @@
+{% extends 'base.html' %}{% block title %}Schemes &amp; MSP Guides{% endblock %}{% block content %}
+<section class="page-intro">
+  <p class="eyebrow">AgriSetu · Farmer Information Desk</p>
+  <h1>Government guides <em>in plain language.</em></h1>
+  <p class="lede">Open the official Minimum Support Price (MSP) documents in English or Hindi, get a quick summary, or ask a specific question about rates and rules.</p>
+</section>
+<section class="document-grid">
+  {% for doc in docs %}
+  <article class="document-card">
+    <span class="document-icon" aria-hidden="true">PDF</span>
+    <div>
+      <p class="eyebrow">{{ doc.language }} guide</p>
+      <h3>{{ doc.label }}</h3>
+      <p>Official Minimum Support Price (MSP) reference guide for farmers.</p>
+      {% if doc.available %}<a class="text-link" href="{{ url_for('static', filename=doc.filename) }}" target="_blank" rel="noopener">Open {{ doc.language }} PDF ↗</a>{% else %}<span class="small-note">Guide unavailable</span>{% endif %}
+    </div>
+  </article>
+  {% endfor %}
+</section>
+<section class="panel legal-assistant">
+  <div>
+    <p class="eyebrow">Guide helper</p>
+    <h2>Ask about MSP &amp; rules</h2>
+    <p class="muted-copy">Select a guide below and ask any question in your preferred language, or leave the question blank for a simple summary of key points.</p>
+    <form class="stack-form" data-legal-form>
+      <label>Select guide<select name="document"><option value="MSPE.pdf">MSP Guide — English</option><option value="MSPH.pdf">MSP Guide — Hindi</option></select></label>
+      <label>Your question (optional)<input name="question" maxlength="1000" placeholder="e.g. What is the MSP for wheat?"></label>
+      <label>Answer language<select name="language">{% for l in languages %}<option>{{ l }}</option>{% endfor %}</select></label>
+      <button class="button button-dark" type="submit">Get answer ↗</button>
+    </form>
+  </div>
+  <div class="legal-output" data-legal-output aria-live="polite"><span class="eyebrow">Answer</span><p class="muted-copy">Choose a guide and language, then request a summary or ask a question. Your answer will appear here.</p></div>
+</section>
+<p class="disclaimer standalone">This tool explains the bundled reference guides in plain language and is not formal legal advice. Always confirm current procurement dates and MSP rates with your local mandi board or agriculture department.</p>
+{% endblock %}

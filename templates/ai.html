@@ -1,0 +1,55 @@
+{% extends 'base.html' %}{% block title %}Leaf Health Scan{% endblock %}{% block content %}
+<section class="page-intro">
+  <p class="eyebrow">AgriSetu · Leaf Health Check</p>
+  <h1>Spot leaf problems <em>early in the field.</em></h1>
+  <p class="lede">Upload a clear photo of an affected leaf to screen for common crop conditions such as early blight, late blight, leaf curl, and bacterial spot.</p>
+</section>
+<section class="two-column scan-layout">
+  <div class="panel">
+    <span class="eyebrow">Leaf photo</span>
+    <h2>Upload or take a photo</h2>
+    <form method="post" enctype="multipart/form-data" class="stack-form" data-scan-form data-busy-form>
+      <label class="upload-area" data-drop>
+        <input type="file" name="image" accept="image/jpeg,image/png,image/webp" required data-image-input>
+        <span class="upload-symbol" aria-hidden="true" data-upload-symbol>＋</span>
+        <strong data-upload-title>Choose or take a leaf photo</strong>
+        <small data-upload-hint>JPG, PNG or WEBP · Up to 10 MB · drag and drop supported</small>
+        <img data-image-preview alt="Selected plant preview" hidden>
+      </label>
+      <button class="button button-dark" type="submit" data-busy-text="Checking leaf… please wait">Check leaf health ↗</button>
+    </form>
+    <p class="small-note">Tip: A sharp, close-up photo of a single leaf in natural daylight gives the clearest reading.</p>
+  </div>
+  <div class="answer-column" aria-live="polite">
+    {% if error %}
+    <div class="notice notice-warning" role="alert"><strong>Could not complete leaf check</strong><p>{{ error }}</p></div>
+    {% elif result %}
+    <div class="answer-card">
+      <span class="eyebrow">Screening result</span>
+      <h2 class="result-title">{{ result.disease }}</h2>
+      {% if result.confidence is not none %}
+      <div class="confidence-line"><span>Match confidence</span><strong>{{ result.confidence }}%</strong></div>
+      <div class="confidence-track" role="progressbar" aria-valuenow="{{ result.confidence }}" aria-valuemin="0" aria-valuemax="100"><span style="width:{{ result.confidence }}%"></span></div>
+      {% endif %}
+      {% if result.image %}<img class="scan-image" src="{{ result.image }}" alt="Scanned leaf with highlighted regions">{% endif %}
+      <p class="answer-copy">{{ result.note }}</p>
+      {% if result.detections|length > 1 %}
+      <ul class="detect-list" aria-label="Other observed signs">{% for d in result.detections %}<li><span>{{ d.label }}</span><strong>{{ d.confidence }}%</strong></li>{% endfor %}</ul>
+      {% endif %}
+      {% if result.confidence is not none and not result.healthy %}
+      <div class="result-actions">
+        <a class="button button-dark" href="{{ url_for('advisor', crop=result.crop, question='A leaf scan flagged possible ' ~ result.disease ~ ' on my ' ~ result.crop ~ '. What should I check and do next?') }}">Get crop care advice ↗</a>
+      </div>
+      {% endif %}
+      <p class="disclaimer">This screening is an early-check aid, not a confirmed laboratory diagnosis. Confirm symptoms with your local Krishi Vigyan Kendra (KVK) before applying any spray.</p>
+    </div>
+    {% else %}
+    <div class="aside-note">
+      <span class="feature-icon" aria-hidden="true">⌕</span>
+      <h3>Tips for a clear leaf photo</h3>
+      <ul class="plain-list"><li>Focus closely on one affected leaf.</li><li>Use natural outdoor daylight and avoid harsh shadows.</li><li>Keep both healthy and spotted areas visible if possible.</li><li>Avoid blurry photos or heavy phone filters.</li></ul>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

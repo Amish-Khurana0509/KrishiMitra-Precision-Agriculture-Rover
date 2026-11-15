@@ -1,0 +1,55 @@
+{% extends 'base.html' %}{% block title %}Field Rover Console{% endblock %}{% block content %}
+<section class="page-intro">
+  <p class="eyebrow">AgriSetu · KrishiMITRA Field Rover</p>
+  <h1>Rover console <em>live field telemetry.</em></h1>
+  <p class="lede">Monitor your KrishiMITRA rover's battery, spray tank levels, GPS position, and covered area in real time.</p>
+</section>
+
+<section class="rover-status-panel" aria-live="polite">
+  <div><span class="eyebrow">Rover status</span><h2 id="rover-status">Waiting for rover</h2><p id="rover-last-seen">No field signal received yet.</p></div>
+  <span class="connection-pill" id="rover-pill"><i></i> Offline</span>
+</section>
+
+<section class="metric-grid">
+  <article class="metric-card"><span>Battery</span><strong id="battery-value">—</strong><small id="battery-voltage">Voltage not reported</small><div class="meter"><i id="battery-meter"></i></div></article>
+  <article class="metric-card"><span>Tank A · NPK</span><strong id="tank-a">—</strong><small>Nutrient mix level</small><div class="meter"><i id="tank-a-meter"></i></div></article>
+  <article class="metric-card"><span>Tank B · Treatment</span><strong id="tank-b">—</strong><small>Crop protection spray</small><div class="meter"><i id="tank-b-meter"></i></div></article>
+  <article class="metric-card"><span>Tank C · Water</span><strong id="tank-c">—</strong><small>Clean water reserve</small><div class="meter"><i id="tank-c-meter"></i></div></article>
+</section>
+
+<section class="two-column rover-details">
+  <div class="panel">
+    <p class="eyebrow">Position &amp; coverage</p>
+    <h2>Field movement</h2>
+    <div class="detail-list">
+      <div><span>Mode</span><strong id="rover-state">—</strong></div>
+      <div><span>Latitude</span><strong id="latitude">—</strong></div>
+      <div><span>Longitude</span><strong id="longitude">—</strong></div>
+      <div><span>Speed</span><strong id="speed">—</strong></div>
+      <div><span>Area covered</span><strong id="area">—</strong></div>
+      <div><span>Runtime</span><strong id="runtime">—</strong></div>
+    </div>
+    <p class="small-note">A field map link appears automatically once GPS coordinates are received.</p>
+    <a class="text-link" id="map-link" href="#" target="_blank" rel="noopener" hidden>View location on map ↗</a>
+  </div>
+  <div class="panel">
+    <p class="eyebrow">Field checklist</p>
+    <h2>Tank &amp; operation guide</h2>
+    <ul class="plain-list">
+      <li><strong>Tank A (NPK):</strong> Liquid nutrient solution for targeted root-zone or foliar feeding.</li>
+      <li><strong>Tank B (Treatment):</strong> Bio-pesticide or fungicide mix applied only where leaf stress is detected.</li>
+      <li><strong>Tank C (Water):</strong> Clean water for dilution and nozzle rinsing between rows.</li>
+      <li><strong>Refill alert:</strong> Tank bars turn red below 20% so you can refill before the next pass.</li>
+    </ul>
+    <p class="small-note">Use the demo preview button below to inspect a live field pass when the rover is parked.</p>
+  </div>
+</section>
+
+<div class="refresh-row">
+  <span id="telemetry-updated">Checking rover connection…</span>
+  <div class="refresh-actions">
+    <button class="button button-light" type="button" data-demo-toggle aria-pressed="false">Preview with demo data</button>
+    <button class="button button-light" type="button" data-refresh-telemetry>Refresh status</button>
+  </div>
+</div>
+{% endblock %}

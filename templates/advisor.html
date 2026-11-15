@@ -1,0 +1,38 @@
+{% extends 'base.html' %}{% block title %}Crop Advisor{% endblock %}{% block content %}
+<section class="page-intro">
+  <p class="eyebrow">AgriSetu · Crop &amp; Soil Guidance</p>
+  <h1>Practical advice <em>tailored to your field.</em></h1>
+  <p class="lede">Share your crop, region, and growth stage to get clear care steps for irrigation, nutrition, and pest prevention.</p>
+</section>
+<section class="two-column">
+  <div class="panel">
+    <div class="panel-title"><span class="eyebrow">Field details</span><h2>Tell us about your crop</h2></div>
+    <form method="post" class="stack-form" data-busy-form>
+      <label>Crop name<input name="crop" required value="{{ form.crop }}" placeholder="e.g. Tomato, wheat, mustard"></label>
+      <label>Village / District / State<input name="location" value="{{ form.location }}" placeholder="e.g. Sonipat, Haryana"></label>
+      <label>Growth stage
+        <select name="stage"><option value="">Select if known</option>{% for s in ['Before sowing','Seedling / nursery','Vegetative growth','Flowering','Fruiting / grain filling','Harvest'] %}<option {{ 'selected' if form.stage==s }}>{{ s }}</option>{% endfor %}</select>
+      </label>
+      <label>Your question<textarea name="question" rows="4" placeholder="Describe leaf changes, soil condition, watering schedule, or what you want to plan...">{{ form.question }}</textarea></label>
+      <label>Preferred language<select name="language">{% for l in languages %}<option {{ 'selected' if form.language==l }}>{{ l }}</option>{% endfor %}</select></label>
+      <button class="button button-dark" type="submit" data-busy-text="Preparing crop advice…">Get crop guidance ↗</button>
+    </form>
+  </div>
+  <div class="answer-column" aria-live="polite">
+    {% if answer %}
+    <div class="answer-card">
+      <div class="answer-top"><span class="eyebrow">Crop advisory</span><span class="provider-tag">{{ provider }}</span></div>
+      {% if ok %}<div class="answer-copy">{{ answer|md }}</div>{% else %}<div class="notice notice-error" role="alert">{{ answer }}</div>{% endif %}
+      <p class="disclaimer">Use this as general field guidance alongside soil testing and local KVK recommendations. Always confirm chemical treatments and dosages with a qualified agronomist.</p>
+    </div>
+    {% else %}
+    <div class="aside-note">
+      <span class="feature-icon" aria-hidden="true">✳</span>
+      <h3>Better details give better guidance.</h3>
+      <p>Include your crop variety, sowing time, recent rainfall or irrigation pattern, and any visible leaf or stem changes for the most useful steps.</p>
+      <p class="small-note">Guidance is available in English, Hindi, Marathi, Gujarati, Punjabi, Tamil, Telugu, and Bengali.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

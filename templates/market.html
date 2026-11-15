@@ -1,0 +1,66 @@
+{% extends 'base.html' %}{% block title %}Mandi Rates{% endblock %}
+{% block head %}{% if loading %}<meta http-equiv="refresh" content="6">{% endif %}{% endblock %}
+{% block content %}
+<section class="page-intro">
+  <p class="eyebrow">AgriSetu · Market Rates</p>
+  <h1>Know the mandi rate <em>before you sell.</em></h1>
+  <p class="lede">Daily wholesale arrivals and modal crop prices across agricultural markets{% if latest %} — latest arrivals {{ latest }}{% endif %}.</p>
+</section>
+
+<section class="panel" aria-label="Filters">
+  <form class="filter-form" method="get">
+    <label>Commodity<input name="commodity" value="{{ commodity }}" placeholder="e.g. Tomato" list="commodity-list" autocomplete="off"></label>
+    <label>State<input name="state" value="{{ state }}" placeholder="e.g. Maharashtra" list="state-list" autocomplete="off"></label>
+    <label>District<input name="district" value="{{ district }}" placeholder="e.g. Nagpur" list="district-list" autocomplete="off"></label>
+    <label>Sort by<select name="sort">{% for key, label in sorts.items() %}<option value="{{ key }}" {{ 'selected' if key == sort }}>{{ label }}</option>{% endfor %}</select></label>
+    <button class="button button-dark" type="submit">Apply</button>
+    <a class="button button-light" href="{{ url_for('market') }}">Clear</a>
+  </form>
+  <datalist id="commodity-list">{% for c in commodities %}<option value="{{ c }}">{% endfor %}</datalist>
+  <datalist id="state-list">{% for s in states %}<option value="{{ s }}">{% endfor %}</datalist>
+  <datalist id="district-list">{% for d in districts %}<option value="{{ d }}">{% endfor %}</datalist>
+  <p class="small-note">Search is not case-sensitive and matches partial names (for example, “tom” finds Tomato).</p>
+</section>
+
+{% if error %}
+<div class="notice notice-warning" role="alert"><strong>Live mandi rates unavailable</strong><p>{{ error }}</p><small>Could not fetch current market prices right now. Please try again shortly.</small></div>
+{% elif loading %}
+<div class="notice" role="status"><strong>Loading today's mandi prices…</strong><p>Fetching the latest state market feeds. This page updates automatically once ready.</p></div>
+{% elif notice %}
+<div class="notice notice-warning" role="status"><strong>{{ 'Partial market feed' if partial else 'Market notice' }}</strong><p>{{ notice }}</p></div>
+{% endif %}
+
+{% if stats %}
+<section class="stats-strip" aria-label="Summary of current results">
+  <div><span>Matching records</span><strong>{{ '{:,}'.format(total) }}</strong></div>
+  <div><span>Markets</span><strong>{{ '{:,}'.format(stats.markets) }}</strong></div>
+  <div><span>Lowest modal ₹/qtl</span><strong>{{ stats.low|inr }}</strong></div>
+  <div><span>Average modal ₹/qtl</span><strong>{{ stats.avg|inr }}</strong></div>
+  <div><span>Highest modal ₹/qtl</span><strong>{{ stats.high|inr }}</strong></div>
+</section>
+{% endif %}
+
+<section class="table-panel">
+  <div class="table-heading"><div><p class="eyebrow">Wholesale mandi feed</p><h2>Market arrivals &amp; prices</h2></div>{% if loaded_at %}<span class="updated-label">Updated {{ loaded_at }}</span>{% endif %}</div>
+  <div class="table-scroll" tabindex="0" aria-label="Mandi price table, scrollable">
+    <table>
+      <thead><tr><th scope="col">Commodity</th><th scope="col">Market / District</th><th scope="col">State</th><th scope="col">Min ₹/qtl</th><th scope="col">Max ₹/qtl</th><th scope="col">Modal ₹/qtl</th><th scope="col">Arrival date</th></tr></thead>
+      <tbody>
+      {% for item in data %}
+        <tr><td><strong>{{ item.commodity or '—' }}</strong><small>{{ item.variety }}{% if item.grade %} · {{ item.grade }}{% endif %}</small></td><td>{{ item.market or '—' }}<small>{{ item.district }}</small></td><td>{{ item.state or '—' }}</td><td>{{ item.min_price|inr }}</td><td>{{ item.max_price|inr }}</td><td class="price-cell">{{ item.modal_price|inr }}</td><td>{{ item.arrival_date or '—' }}</td></tr>
+      {% else %}
+        <tr><td colspan="7" class="empty-state">{% if error %}No live records available right now. Please refresh in a moment.{% elif loading %}Loading today's mandi records…{% else %}No records match these filters. Try clearing one or more filters.{% endif %}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="table-foot">
+    <span>{% if data %}Showing {{ first }}–{{ last }} of {{ '{:,}'.format(total) }} records{% if total != dataset_total %} (filtered from {{ '{:,}'.format(dataset_total) }}){% endif %}{% else %}No records{% endif %}{% if partial %} · partial feed{% endif %} · Reported wholesale rates in ₹ per quintal.</span>
+    {% if pages > 1 %}<nav class="pager" aria-label="Pages">
+      {% if prev_url %}<a class="button button-light" href="{{ prev_url }}" rel="prev">← Previous</a>{% endif %}
+      <span>Page {{ page }} of {{ '{:,}'.format(pages) }}</span>
+      {% if next_url %}<a class="button button-light" href="{{ next_url }}" rel="next">Next →</a>{% endif %}
+    </nav>{% endif %}
+  </div>
+</section>
+{% endblock %}

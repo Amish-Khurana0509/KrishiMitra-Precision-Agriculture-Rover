@@ -1,0 +1,56 @@
+{% extends 'base.html' %}{% block title %}Farmer Dashboard{% endblock %}{% block content %}
+<section class="welcome-row">
+  <div>
+    <p class="eyebrow">AgriSetu · By KrishiMITRA</p>
+    <h1>Practical tools for <em>every stage of your harvest.</em></h1>
+    <p class="lede">Check daily mandi rates, inspect leaf health, get stage-wise crop guidance, and monitor your KrishiMITRA field rover—all in one place.</p>
+    <div class="welcome-actions">
+      <a class="button button-dark" href="{{ url_for('ai_scan') }}">Check leaf health <span aria-hidden="true">↗</span></a>
+      <a class="text-link" href="{{ url_for('advisor') }}">Ask the crop advisor →</a>
+    </div>
+  </div>
+  <div class="hero-photo" role="img" aria-label="Aerial view of farmland with KrishiMITRA rover scanning crop rows">
+    <svg class="field-rover-overlay" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
+      <path class="rover-plan-path" d="M 55 58 L 345 58 C 362 58, 362 106, 345 106 L 55 106 C 38 106, 38 154, 55 154 L 345 154 C 362 154, 362 202, 345 202 L 55 202" />
+      <path class="rover-scan-trail" d="M 55 58 L 345 58 C 362 58, 362 106, 345 106 L 55 106 C 38 106, 38 154, 55 154 L 345 154 C 362 154, 362 202, 345 202 L 55 202" />
+      <circle class="row-marker" cx="55" cy="58" r="3" />
+      <circle class="row-marker" cx="345" cy="106" r="3" />
+      <circle class="row-marker" cx="55" cy="154" r="3" />
+      <circle class="row-marker" cx="345" cy="202" r="3" />
+      <g class="rover-bot">
+        <polygon points="10,-7 30,-15 30,15 10,7" fill="rgba(167, 232, 148, 0.35)" />
+        <rect x="-11" y="-12" width="7" height="3.5" rx="1.2" fill="#1b2b20" />
+        <rect x="4" y="-12" width="7" height="3.5" rx="1.2" fill="#1b2b20" />
+        <rect x="-11" y="8.5" width="7" height="3.5" rx="1.2" fill="#1b2b20" />
+        <rect x="4" y="8.5" width="7" height="3.5" rx="1.2" fill="#1b2b20" />
+        <rect x="-13" y="-9" width="26" height="18" rx="4" fill="#294a35" stroke="#fffefa" stroke-width="1.6" />
+        <rect x="-7" y="-5.5" width="12" height="11" rx="2" fill="#c18a3c" />
+        <circle class="rover-beacon" cx="8" cy="0" r="2.6" fill="#9ef08a" />
+      </g>
+    </svg>
+    <div class="photo-caption"><span class="live-dot"></span> KRISHIMITRA ROVER · LINE SCANNING <small>Automated row-by-row field monitoring</small></div>
+  </div>
+</section>
+
+<section class="section-heading">
+  <div><p class="eyebrow">Farmer Toolkit</p><h2>What would you like to do today?</h2></div>
+  <p>Select a service below to get started.</p>
+</section>
+
+<section class="feature-grid">
+  <a class="feature-card feature-featured" href="{{ url_for('market') }}"><span class="feature-number">01 / MANDI PRICES</span><span class="feature-icon" aria-hidden="true">₹</span><h3>Check mandi rates</h3><p>Compare daily wholesale crop prices across markets before deciding when and where to sell.</p><span class="feature-link">View market prices ↗</span></a>
+  <a class="feature-card" href="{{ url_for('ai_scan') }}"><span class="feature-number">02 / CROP HEALTH</span><span class="feature-icon" aria-hidden="true">⌕</span><h3>Scan leaf health</h3><p>Upload a clear leaf photo to check for early signs of blight, spots, or viral stress.</p><span class="feature-link">Open leaf scanner ↗</span></a>
+  <a class="feature-card" href="{{ url_for('advisor') }}"><span class="feature-number">03 / CROP ADVISORY</span><span class="feature-icon" aria-hidden="true">✳</span><h3>Get crop guidance</h3><p>Ask questions with your crop, location, and growth stage for tailored field advice.</p><span class="feature-link">Consult crop advisor ↗</span></a>
+  <a class="feature-card" href="{{ url_for('legal') }}"><span class="feature-number">04 / SCHEMES &amp; MSP</span><span class="feature-icon" aria-hidden="true">▤</span><h3>Understand MSP &amp; schemes</h3><p>Read official Minimum Support Price guides in English or Hindi, or ask questions in simple words.</p><span class="feature-link">Explore guides ↗</span></a>
+  <a class="feature-card feature-wide" href="{{ url_for('tank') }}"><span class="feature-number">05 / FIELD ROVER</span><span class="feature-icon" aria-hidden="true">⌁</span><div><h3>Monitor your KrishiMITRA rover</h3><p>Track live battery, spray tank levels, GPS location, and field coverage while your rover operates.</p></div><span class="feature-link">Open rover console ↗</span></a>
+</section>
+
+<section class="status-strip">
+  <div><span class="eyebrow">Platform readiness</span><h2>Farmer services</h2><p>Quick availability status for AgriSetu's advisory, market price, and leaf-health tools.</p></div>
+  <div class="service-status">
+    <div><span class="status-dot {{ 'good' if ai_ready else 'muted' }}"></span><span>Crop Advisory</span><b>{{ 'Ready' if ai_ready else 'Offline' }}</b></div>
+    <div><span class="status-dot {{ 'good' if mandi_ready else 'muted' }}"></span><span>Mandi Price Feed</span><b>{{ 'Active' if mandi_ready else 'Unavailable' }}</b></div>
+    <div><span class="status-dot {{ 'good' if model_ready else 'muted' }}"></span><span>Leaf Scanner</span><b>{{ 'Ready' if model_ready else 'Unavailable' }}</b></div>
+  </div>
+</section>
+{% endblock %}
